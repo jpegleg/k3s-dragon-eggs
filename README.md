@@ -14,7 +14,7 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 - use calico CNI instead of flannel and apply calico eBPF dataplane 
 - install helm on the control plane node
 - apply tetragon tracing to the cluster via helm chart
-
+- use calico networking for host firewall rules
 
 
 
@@ -82,12 +82,15 @@ ansible-playbook -u root -i hosts.ini sharpen-claws.yml
 # container images are imported or otherwise available.
 anisble-playbook -u root -i hosts.ini hatch-eggs.yml
 
+# The local firewalling via calico:
+anisble-playbook -u root -i hosts.ini flight.yml
+
 ```
 
 
 #### calico eBPF features
 
-It seems that further calico features may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get hose working in k3s successfully.
+It seems that further calico features like the wireguard eBPF may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get hose working in k3s successfully.
 
 There is also currently a "bug" with tetragon where some values are populated with null strings:
 
