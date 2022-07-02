@@ -1,0 +1,32 @@
+---
+
+- name: register with wazuh 
+  hosts: bottles
+  tasks:
+
+  - name: set wazuh gpg key
+    shell: rpm --import https://packages.wazuh.com/key/GPG-KEY-WAZUH
+    args:
+      executable: /bin/bash
+
+  - name: copy over wazuh repo file
+    copy:
+      src: files/wazuh.repo
+      dest: /etc/zypp/repos.d/wazuh.repo
+
+  - name: copy over rsyslog.conf
+    copy:
+      src: files/rsyslog.conf
+      dest: /etc/rsyslog.conf
+
+  - name: restart rsyslog
+    shell: systemctl restart rsyslog
+    args:
+      executable: /bin/bash
+
+  - name: zypper refresh
+    shell: zypper refresh
+    args:
+      executable: /bin/bash
+
+...
