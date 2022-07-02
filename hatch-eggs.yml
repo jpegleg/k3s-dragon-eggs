@@ -6,11 +6,11 @@
 
   - name: copy out dragon-network.yml to bottle1
     copy:
-      src: files/dragon-network.yml
-      dest: /root/dragon-network.yml
+      src: files/dragon-manifest.yml
+      dest: /root/dragon-manifest.yml
 
   - name: apply network manifest
-    shell: k3s kubectl apply -f /root/dragon-network.yml
+    shell: k3s kubectl apply -f /root/dragon-manifest.yml
     args:
       executable: /bin/bash
 
