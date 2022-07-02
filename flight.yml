@@ -1,0 +1,23 @@
+---
+
+- name: apply kubernetes manifests 
+  hosts: bottle1
+  tasks:
+
+  - name: copy out dragon-network.yml to bottle1
+    copy:
+      src: files/dragon-network.yml
+      dest: /root/dragon-network.yml
+
+  - name: copy out calicoctl patch script to bottle1
+    copy:
+      src: files/wings
+      dest: /root/wings
+
+  - name: apply wings script
+    shell: bash /root/wings
+    args:
+      executable: /bin/bash
+
+
+...
