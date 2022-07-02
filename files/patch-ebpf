@@ -1,0 +1,15 @@
+ebpfon () {
+  calicoctl patch felixconfiguration default --patch='{"spec": {"bpfEnabled": true}}'
+}
+dsron () {
+  calicoctl patch felixconfiguration default --patch='{"spec": {"bpfExternalServiceMode": "DSR"}}'
+}
+cwireon () {
+  calicoctl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
+}
+
+mkdir ~/.kube/
+k3s kubectl config view --raw > ~/.kube/config
+ebpfon
+dsron
+cwireon
