@@ -54,7 +54,7 @@ The default firewalld configuration is rather restrictive. No external API acces
 I like to leave the API blocked, but that isn't always reasonable. The API rule for bottle1 is as follows:
 
 ```
-firewall-cmd --permanent --zone=public --add-port=6443/tcp 2>/dev/null
+firewall-cmd --permanent --zone=public --add-port=6443/tcp
 ```
 
 This set up only has one "worker" node and one service. Add more "bottle2" intenvory items to increase the workers.
