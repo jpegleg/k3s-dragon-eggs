@@ -6,7 +6,7 @@
 
   - name: install auditd
     zypper:
-      name: auditd
+      name: audit
       state: present
  
   - name: install apparmor
@@ -46,7 +46,7 @@
 
   - name: remove firewalld
     zypper:
-      name: fireawlld
+      name: firewalld
       state: removed
  
   - name: set motd
