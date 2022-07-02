@@ -1,0 +1,38 @@
+---
+
+- name: make bottles
+  hosts: bottles
+  tasks:
+
+  - name: install vim
+    zypper:
+      name: vim
+      state: present
+     
+  - name: install tcpdmp
+    zypper:
+      name: tcpdump
+      state: present
+  
+  - name: install git
+    zypper:
+      name: git
+      state: present
+  
+  - name: install openssl
+    zypper:
+      name: git
+      state: present
+  
+  - name: install curl
+    zypper:
+      name: curl
+      state: present
+ 
+  - name: disable firewalld for now
+    shell: systemctl stop firewalld && systemctl disable firewalld
+    args:
+      executable: /bin/bash
+
+
+...
