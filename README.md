@@ -7,6 +7,7 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 
 - AES CBC encrypted cluster secrets
 - local restrictive ingress firewall rules
+- blocked egress for service container
 - k3s network policy
 - wazuh repo add
 - rsyslog configuration
@@ -58,3 +59,17 @@ firewall-cmd --permanent --zone=public --add-port=6443/tcp 2>/dev/null
 
 This set up only has one "worker" node and one service. Add more "bottle2" intenvory items to increase the workers.
 The water-bottles.yml can be used to add new nodes to the cluster etc.
+
+#### The container image
+
+The `dragon-network.yml` file is a kubernetes manifest. It contains a deployment for a container locally imported and never pulled named `localhost/pki3`. This container is not imported in the template. An example of the import (done on each node):
+
+```
+k3s ctr image import pki3.tgz
+unpacking localhost/pki3:latest (sha256:3ca374e62f69fd5b9dd6fe2146c859b00827839632fbf03a91b4abcf014c5213)...done
+
+```
+
+This image is the front-end container for the services. If there are many microservices services, it could be the api gateway type thing, etc.
+Alternatively, more deployments are services are created and firewall rules opened up etc. Update the `dragon-network.yml` to contain any additional deployments etc. The design here is a single manifest maintained remotely on the ansible bastion host, the same one that is running the playbooks. It likely would be pulled down to the bastion from a git repo, or otherwise stored however you like. None of that is within scope of this template.
+
