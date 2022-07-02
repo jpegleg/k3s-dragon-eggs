@@ -113,7 +113,7 @@ I prefer to drop the policy when maintenance is being done. The policies are glo
 bottle1:~ # calicoctl get gnp
 NAME           
 default-deny   
-failsafe   
+allow-rules  
 ```
 
 From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies.
