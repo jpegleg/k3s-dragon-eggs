@@ -1,0 +1,89 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dragon
+  labels:
+    name: dragon
+  annotations:
+    app.kubernetes.io/name: dragon
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: services
+    app.kubernnetes.io/part-of: internal
+    app.kubernetes.io/managed-by: manifest
+    app.kubernetes.io/created-by: jpegleg
+...
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enkey
+  namespace: dragon
+  annotations:
+    app.kubernetes.io/name: enkey
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: pki3-service
+    app.kubernetes.io/managed-by: manifest
+    app.kubernetes.io/created-by: jpegleg
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+    nodePort: 30311
+    protocol: TCP
+  type: NodePort
+  selector:
+    app: pki3
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pki3
+  namespace: dragon
+  labels:
+    app.kubernetes.io/name: pki3
+    app: pki3
+  annotations:
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: pki3-deployment
+    app.kubernetes.io/managed-by: manifest
+    app.kubernetes.io/created-by: jpegleg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pki3
+  template:
+    metadata:
+      labels:
+        app: pki3
+        app.kubernetes.io/name: pki3
+    spec:
+      containers:
+      - name: pki3
+        image: "localhost/pki3"
+        imagePullPolicy: Never
+        ports:
+        - name: pki3
+          containerPort: 443
+        resources:
+          limits:
+            memory: 40Mi
+...
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: egg-access
+  namespace: dragon
+spec:
+  podSelector:
+    matchLabels:
+      app: pki3
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: d6db4766e0953b01dfd08f6ef2824309049a
+...
