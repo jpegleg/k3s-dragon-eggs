@@ -12,6 +12,7 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 - wazuh repo add
 - rsyslog configuration
 - deploy motd
+- use calico CNI instead of flannel and apply calico eBPF dataplane with DSR and wireguard
 
 ## Adjusting and using the template
 
@@ -48,9 +49,12 @@ anisble-playbook -u root -i hosts.ini water-bottles.yml
 # The hatch-eggs.yml playbook brings firewalld back up and allows port 30311 on the "bottle2" host.
 # The hatch-eggs.yml playbook also applies files/dragon-network.yml manifest to the cluster via bottle1.
 anisble-playbook -u root -i hosts.ini hatch-eggs.yml
+# The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
+# That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico- pods are up first.
+ansible-playbook -u root -i hosts.ini sharpen-claws.yml
 ```
 
-The default firewalld configuration is rather restrictive. No external API access for k3s when the wall is up.
+The default firewalld configuration is rather restrictive on bottle1. No external API access for k3s when the wall is up.
 I like to leave the API blocked, but that isn't always reasonable. The API rule for bottle1 is as follows:
 
 ```
@@ -58,7 +62,8 @@ firewall-cmd --permanent --zone=public --add-port=6443/tcp
 ```
 
 This set up only has one "worker" node and one service. Add more "bottle2" intenvory items to increase the workers.
-The water-bottles.yml can be used to add new nodes to the cluster etc.
+The water-bottles.yml can be used to add new nodes to the cluster etc. By default bottle2 hosts are untagged and also
+firewalld is disabled. 
 
 #### The container image
 
