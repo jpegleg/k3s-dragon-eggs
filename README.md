@@ -15,6 +15,9 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 - install helm on the control plane node
 - apply tetragon tracing to the cluster
 
+
+
+
 ## Adjusting and using the template
 
 To start setting it up, we'll need to set the rsyslog host in the files/rsyslog.conf
@@ -36,27 +39,6 @@ WAZUH_MANAGER="blah.blah.blah.yourlogginghost" zypper install wazuh-agent
 
 If you don't want to use a centralized logging/wazuh host, skip fire-bottle.yml.
 
-### Example flow of playbooks
-
-```
-# The set-bottles.yml playbook installs some packages and sets the message-of-the-day file /etc/motd.
-# This playbook also removes firewalld!
-anisble-playbook -u root -i hosts.ini set-bottles.yml
-# The fire-bottles.yml playbook adds the wazuh 4 repository to bottle1 and bottle2, 
-# as well as the gpg signing key, sets an rsyslog.conf, and refreshes zypper.
-anisble-playbook -u root -i hosts.ini fire-bottles.yml
-# Do any wazuh agent registration here before water-bottles.yml and after fire-bottles.yml.
-anisble-playbook -u root -i hosts.ini water-bottles.yml
-# The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
-# That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico-* pods are up first.
-ansible-playbook -u root -i hosts.ini sharpen-claws.yml
-
-# The hatch-eggs.yml playbook applies files/dragon-network.yml manifest to the cluster via bottle1.
-anisble-playbook -u root -i hosts.ini hatch-eggs.yml
-
-```
-
-
 
 #### The container image
 
@@ -76,4 +58,27 @@ This local importing could be replaced by a remote or local registry etc.
 The playbooks are designed for only one control plane node set as `bottle1` in the ansible inventory (hosts.ini in the samples). 
 The `bottle2` category is the workers and we can have as many of them as we like, although it is possible that the token expires before we finish the playbook etc. Increase ansible threads or otherwise adjust for larger worker pools.
 
+
+### Example flow of playbooks
+
+```
+# The set-bottles.yml playbook installs some packages and sets the message-of-the-day file /etc/motd.
+# This playbook also removes firewalld!
+anisble-playbook -u root -i hosts.ini set-bottles.yml
+
+# The fire-bottles.yml playbook adds the wazuh 4 repository to bottle1 and bottle2, 
+# as well as the gpg signing key, sets an rsyslog.conf, and refreshes zypper.
+anisble-playbook -u root -i hosts.ini fire-bottles.yml
+
+# Do any wazuh agent registration here before water-bottles.yml and after fire-bottles.yml.
+anisble-playbook -u root -i hosts.ini water-bottles.yml
+
+# The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
+# That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico-* pods are up first.
+ansible-playbook -u root -i hosts.ini sharpen-claws.yml
+
+# The hatch-eggs.yml playbook applies files/dragon-network.yml manifest to the cluster via bottle1.
+anisble-playbook -u root -i hosts.ini hatch-eggs.yml
+
+```
 
