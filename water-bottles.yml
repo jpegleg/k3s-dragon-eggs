@@ -5,7 +5,7 @@
   tasks:
 
   - name: install k3s
-    shell: yes | curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --write-kubeconfig-mode 644 --secrets-encryption" sh -
+    shell: yes | curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=none --disable-network-policy --cluster-cidr=192.168.0.0/16" INSTALL_K3S_EXEC="server --write-kubeconfig-mode 644 --secrets-encryption" sh -
     args:
       executable: /bin/bash
 
@@ -35,5 +35,11 @@
     args:
       executable: /bin/bash
 
+- name: install calico operator
+  hosts: bottle1
+  tasks:
+  - name: apply calico CNI
+    shell: kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
+ 
 
 ...
