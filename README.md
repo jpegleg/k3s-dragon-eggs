@@ -6,7 +6,7 @@ OpenSUSE Leap 15.4 is the current OS this is designed for, although it should wo
 To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 
 - AES CBC encrypted cluster secrets
-- local restrictive firewall rules
+- local restrictive ingress firewall rules
 - k3s network policy
 - wazuh repo add
 - rsyslog configuration
