@@ -7,7 +7,6 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 
 - AES CBC encrypted cluster secrets
 - blocked egress for service container
-- k3s network policy
 - wazuh repo add
 - rsyslog configuration
 - deploy motd
