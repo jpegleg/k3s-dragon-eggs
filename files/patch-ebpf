@@ -1,21 +1,9 @@
 ebpfon () {
   calicoctl patch felixconfiguration default --patch='{"spec": {"bpfEnabled": true}}'
 }
-dsron () {
-  calicoctl patch felixconfiguration default --patch='{"spec": {"bpfExternalServiceMode": "DSR"}}'
-}
-cwireon () {
-  calicoctl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
-}
+
 
 mkdir ~/.kube/
 k3s kubectl config view --raw > ~/.kube/config
+chmod 600 ~/.kube/config
 ebpfon
-dsron
-cwireon
-# Delete the controller for calico because it is busted in k3s with ebpf enabled...
-k3s kubectl delete deployment calico-kube-controllers -n kube-system
-k3s kubectl delete deployment metrics-server -n kube-system
-k3s kubectl delete deployment traefik -n kube-system
-k3s kubectl delete deployment coredns -n kube-system
-
