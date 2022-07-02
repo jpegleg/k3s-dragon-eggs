@@ -82,16 +82,4 @@ anisble-playbook -u root -i hosts.ini hatch-eggs.yml
 
 ```
 
-#### Broken things with calico eBPF dataplane
 
-There are a number of things that are currently breaking in k3s with calico eBPF dataplane applied. 
-You might chose to not apply the eBPF dataplane, but the client IP preservation and other calico eBPF features are very appealing.
-
-The playbook cleans up some broken aspects, but after reboot or after changes, some of these may come back broken. 
-Delete them again:
-
-```
-k3s kubectl delete deployment metrics-server -n kube-system
-k3s kubectl delete deployment traefik -n kube-system
-k3s kubectl delete deployment coredns -n kube-system
-```
