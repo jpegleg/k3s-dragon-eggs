@@ -78,8 +78,20 @@ anisble-playbook -u root -i hosts.ini water-bottles.yml
 ansible-playbook -u root -i hosts.ini sharpen-claws.yml
 
 # The hatch-eggs.yml playbook applies files/dragon-network.yml manifest to the cluster via bottle1.
+# Ensure the manifest makes sense for your usage and that the 
+# container images are imported or otherwise available.
 anisble-playbook -u root -i hosts.ini hatch-eggs.yml
 
 ```
 
+
+#### calico eBPF features
+
+It seems that further calico features may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get hose working in k3s successfully.
+
+There is also currently a "bug" with tetragon where some values are populated with null strings:
+
+`"name":"\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"`
+
+See https://github.com/cilium/tetragon/issues/193 regarding more on the tetragon behavior.
 
