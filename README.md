@@ -13,7 +13,7 @@ To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 - deploy motd
 - use calico CNI instead of flannel and apply calico eBPF dataplane with DSR and wireguard
 - install helm on the control plane node
-- apply tetragon tracing to the cluster
+- apply tetragon tracing to the cluster via helm chart
 
 
 
