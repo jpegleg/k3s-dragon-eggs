@@ -5,7 +5,7 @@
   tasks:
 
   - name: install k3s
-    shell: yes | curl -sfL https://get.k3s.io | sh -
+    shell: yes | curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --write-kubeconfig-mode 644 --secrets-encryption" sh -
     args:
       executable: /bin/bash
 
