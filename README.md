@@ -50,7 +50,7 @@ anisble-playbook -u root -i hosts.ini water-bottles.yml
 # The hatch-eggs.yml playbook also applies files/dragon-network.yml manifest to the cluster via bottle1.
 anisble-playbook -u root -i hosts.ini hatch-eggs.yml
 # The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
-# That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico- pods are up first.
+# That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico-* pods are up first.
 ansible-playbook -u root -i hosts.ini sharpen-claws.yml
 ```
 
