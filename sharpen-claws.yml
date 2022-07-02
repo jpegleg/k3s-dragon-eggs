@@ -1,0 +1,25 @@
+---
+
+- name: apply calico eBPF dataplane 
+  hosts: bottle1
+  tasks:
+
+  - name: install calicoctl
+    shell: curl -L https://github.com/projectcalico/calico/releases/download/v3.23.2/calicoctl-linux-amd64 -o calicoctl && cp calicoctl /usr/local/sbin/calicoctl && chmod +x /usr/local/sbin/calicoctl
+    args:
+      executable: /bin/bash
+
+  - name: copy out patch script
+    copy:
+      src: files/patch-ebpf
+      dest: /usr/local/sbin/patch-ebpf
+    tags: patch
+
+  - name: perform patches
+    shell: bash /usr/local/sbin/patch-ebpf
+    args:
+      executable: /bin/bash
+    tags: patch
+
+
+...
