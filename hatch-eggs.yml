@@ -39,7 +39,7 @@
       executable: /bin/bash
 
   - name: enable 30311 on bottle2
-    shell: "firewall-cmd --permanent --zone=public --add-port=30311/tcp 2>/dev/null"
+    shell: "firewall-cmd --permanent --zone=public --add-port=30311/tcp 2>/dev/null; firewall-cmd --reload"
     args:
       executable: /bin/bash
 ...
