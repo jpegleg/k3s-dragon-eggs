@@ -4,6 +4,16 @@
   hosts: bottles
   tasks:
 
+  - name: install auditd
+    zypper:
+      name: auditd
+      state: present
+ 
+  - name: install apparmor
+    zypper:
+      name: apparmor
+      state: present
+ 
   - name: install vim
     zypper:
       name: vim
@@ -29,17 +39,20 @@
       name: curl
       state: present
  
-  - name: disable firewalld for now
+  - name: remove firewalld
     shell: systemctl stop firewalld && systemctl disable firewalld
     args:
       executable: /bin/bash
-    tags: firewalldoff
-    
+
+  - name: remove firewalld
+    zypper:
+      name: fireawlld
+      state: removed
+ 
   - name: set motd
     copy:
       src: files/motd
       dest: /etc/motd
     tags: motd
-
 
 ...
