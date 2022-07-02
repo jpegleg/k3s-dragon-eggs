@@ -35,7 +35,7 @@
     args:
       executable: /bin/bash
 
-- name: install calico operator
+- name: install calico via manifest
   hosts: bottle1
   tasks:
   - name: apply calico CNI
