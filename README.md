@@ -6,7 +6,7 @@ OpenSUSE Leap 15.4 is the current OS this is designed for, although it should wo
 To switch to Ubuntu or RHEL etc, change the ansible zypp to deb etc.
 
 - AES CBC encrypted cluster secrets
-- blocked egress for service container
+- restricted ingress and egress on node host and containers
 - wazuh repo add
 - rsyslog configuration
 - deploy motd
