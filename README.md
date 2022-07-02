@@ -98,7 +98,7 @@ There is also currently a "bug" with tetragon where some values are populated wi
 
 See https://github.com/cilium/tetragon/issues/193 regarding more on the tetragon behavior.
 
-# Adjusting the firewall
+## Adjusting the firewall
 
 The default allows access to specific ports defined in `dragon-network.yml` from `192.168.1.0/24`.
 Adjust files/dragon-network.yml to include any firewall rules or adjustments needed.
