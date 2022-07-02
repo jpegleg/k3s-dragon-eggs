@@ -33,6 +33,13 @@
     shell: systemctl stop firewalld && systemctl disable firewalld
     args:
       executable: /bin/bash
+    tags: firewalldoff
+    
+  - name: set motd
+    copy:
+      src: files/motd
+      dest: /etc/motd
+    tags: motd
 
 
 ...
