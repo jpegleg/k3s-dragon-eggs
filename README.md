@@ -78,3 +78,10 @@ unpacking localhost/pki3:latest (sha256:3ca374e62f69fd5b9dd6fe2146c859b008278396
 This image is the front-end container for the services. If there are many microservices services, it could be the api gateway type thing, etc.
 Alternatively, more deployments are services are created and firewall rules opened up etc. Update the `dragon-network.yml` to contain any additional deployments etc. The design here is a single manifest maintained remotely on the ansible bastion host, the same one that is running the playbooks. It likely would be pulled down to the bastion from a git repo, or otherwise stored however you like. None of that is within scope of this template.
 
+#### Nodes
+
+The playbooks are designed for only one control plane node set as `bottle1` in the ansible inventory (hosts.ini in the samples). 
+The `bottle2` category is the workers and we can have as many of them as we like.
+
+Further added control plane nodes can be done as described in the k3s documentation. Workers may be added via the `water-bottles.yml` or separately.
+
