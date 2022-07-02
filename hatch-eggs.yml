@@ -14,4 +14,15 @@
     args:
       executable: /bin/bash
 
+  - name: copy out tetragon and helm script to bottle1
+    copy:
+      src: files/tetragon
+      dest: /root/tetragon
+
+  - name: apply helm and tetragon
+    shell: bash /root/tetragon
+    args:
+      executable: /bin/bash
+
+
 ...
