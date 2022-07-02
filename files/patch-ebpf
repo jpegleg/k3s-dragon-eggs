@@ -13,3 +13,5 @@ k3s kubectl config view --raw > ~/.kube/config
 ebpfon
 dsron
 cwireon
+# Delete the controller for calico because it is busted in k3s with ebpf enabled...
+k3s kubectl delete deployment calico-kube-controllers -n kube-system
