@@ -1,0 +1,39 @@
+---
+
+- name: install k3s on bottle1 
+  hosts: bottle1
+  tasks:
+
+  - name: install k3s
+    shell: yes | curl -sfL https://get.k3s.io | sh -
+    args:
+      executable: /bin/bash
+
+  - name: register token as rtoke
+    shell: cat /var/lib/rancher/k3s/server/node-token
+    args:
+      executable: /bin/bash
+    register: rtoke
+
+  - name: register bottle1 IP address as addrz
+    shell: hostname -I | cut -d' ' -f1
+    args:
+      executable: /bin/bash
+    register: addrz
+  
+  - name: fill hostvar name
+    add_host:
+      name: "bottle1"
+      ADDRZ: "{{ addrz.stdout }}"
+      RTOKE: "{{ rtoke.stdout }}"
+
+- name: install k3s on bottle2
+  hosts: bottle2
+  tasks:
+  - name: install k3s on second bottle
+    shell: "yes | curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['bottle1']['ADDRZ'] }}:6443 K3S_TOKEN={{ hostvars['bottle1']['RTOKE'] }} sh -"
+    args:
+      executable: /bin/bash
+
+
+...
