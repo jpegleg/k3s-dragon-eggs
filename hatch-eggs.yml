@@ -14,24 +14,4 @@
     args:
       executable: /bin/bash
 
-  - name: re apply firewalld
-    zypper:
-      name: firewalld
-      state: installed
-
-  - name: restart firewalld
-    shell: systemctl enable firewalld && systemctl restart firewalld
-    args:
-      executable: /bin/bash
-
-- name: hatch egg 
-  hosts: bottle2
-  tasks:
-
-  - name: disable firewalld on bottle2 nodes
-    shell: systemctl disable firewalld && systemctl stop firewalld
-    args:
-      executable: /bin/bash
-
-
 ...
