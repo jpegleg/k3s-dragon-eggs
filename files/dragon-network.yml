@@ -71,19 +71,3 @@ spec:
           limits:
             memory: 40Mi
 ...
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: egg-access
-  namespace: dragon
-spec:
-  podSelector:
-    matchLabels:
-      app: pki3
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: d6db4766e0953b01dfd08f6ef2824309049a
-...
