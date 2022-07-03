@@ -90,7 +90,7 @@ anisble-playbook -u root -i hosts.ini flight.yml
 
 #### calico eBPF features
 
-It seems that further calico features like the wireguard eBPF may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get hose working in k3s successfully.
+It seems that further calico features like the wireguard eBPF may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get those working in k3s successfully.
 
 There is also currently a "bug" with tetragon where some values are populated with null strings:
 
