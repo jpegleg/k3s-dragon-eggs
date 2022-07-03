@@ -8,11 +8,13 @@
     copy:
       src: files/dragon-manifest.yml
       dest: /root/dragon-manifest.yml
+    tags: hatch
 
   - name: apply network manifest
     shell: k3s kubectl apply -f /root/dragon-manifest.yml
     args:
       executable: /bin/bash
+     tags: hatch
 
   - name: copy out tetragon and helm script to bottle1
     copy:
