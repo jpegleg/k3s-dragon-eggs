@@ -41,7 +41,7 @@ If you don't want to use a centralized logging/wazuh host, skip fire-bottle.yml.
 
 #### The container image
 
-The `dragon-network.yml` file is a kubernetes manifest. It contains a deployment for a container locally imported and never pulled named `localhost/pki3`. This container is not imported in the template. An example of the import (done on each node):
+The `dragon-manifest.yml` file is a kubernetes manifest. It contains a deployment for a container locally imported and never pulled named `localhost/pki3`. This container is not imported in the template. An example of the import (done on each node):
 
 ```
 k3s ctr image import pki3.tgz
