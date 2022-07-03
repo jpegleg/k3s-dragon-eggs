@@ -147,7 +147,39 @@ spec:
   - action: Allow
 
 ```
-With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound... except that we have a rule at the same level "0" that allows specific ports, which will then override the ingress Deny. As long as the global allow and the global deny rules are also included, they will still be in effect.
+With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound... except that we have a rule at the same level "0" that allows specific ports, which will then override the ingress Deny. As long as the global allow and the global deny rules are also included, they will still be in effect in the chain.
+
+Instead of patching in eBPF, we can use it declaratively in the network manifest like this:
+
+```
+apiVersion: projectcalico.org/v3
+kind: FelixConfiguration
+metadata:
+  name: default
+spec:
+  bpfEnabled: true
+  bpfDisableUnprivileged: true
+```
+
+Instead of enabling eBPF like the example above, we might disable eBPF and set netfilter chaining to either Append or Insert:
+
+```
+apiVersion: projectcalico.org/v3
+kind: FelixConfiguration
+metadata:
+  name: default
+spec:
+  bpfEnabled: false
+  chainInsertMode: Append
+  bpfDisableUnprivileged: true
+  
+```
+
+The `  bpfDisableUnprivileged: true` option is typically default for most linux distros, but might as well declare that we don't want that explicity here since we can.
+
+See more options for Felixconfiguration here: https://projectcalico.docs.tigera.io/reference/resources/felixconfig
+
+The calico eBPF dataplane 
 
 
 Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
