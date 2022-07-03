@@ -9,9 +9,9 @@
       name: audit
       state: present
  
-  - name: install apparmor
+  - name: install apparmor-parser
     zypper:
-      name: apparmor
+      name: apparmor-parser
       state: present
  
   - name: install vim
