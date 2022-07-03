@@ -119,3 +119,12 @@ allow-rules
 
 From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies.
 
+#### CICD without an image registry option
+
+While an image registry can be added to the configuration, we can also do CICD via ssh/ansible. Example description:
+Have the image built, SBOM constructed, signed, tested, verified, and approved in the CICD, then send the exported image 
+tar file out to the nodes and use the ctr image import, then apply the manifests. I rather like having SSH-based CICD
+because we can put very strong controls and identity around SSH easily, where as remote registries are a bit more
+work to maintain and keep that same level of security. 
+Instead of an image registry, a collection of signed and backed up artifacts (image tarballs) can be 
+an alternative option.
