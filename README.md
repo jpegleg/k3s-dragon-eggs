@@ -146,7 +146,7 @@ spec:
         - 53
         - 514
         - 443
-        - 514
+        - 1514
         - 1515
   - action: Allow
     protocol: UDP
