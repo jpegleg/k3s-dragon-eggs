@@ -180,7 +180,7 @@ And calico can extend on to other devices. In this template we set BGP between c
 and have host-level network rules declared once on the control plane, applying to every labelled
 node in the cluster. 
 
-This is the second rule in the template, that denies all traffic not related to the kube-system or dragon namespaces.
+This is the second rule in the template denies all traffic.
 
 ```
 apiVersion: projectcalico.org/v3
@@ -189,7 +189,7 @@ metadata:
   name: default-deny
 spec:
   order: 1
-  selector: projectcalico.org/namespace != "kube-system|dragon"
+  selector: "all()"
   types:
   - Ingress
   - Egress
