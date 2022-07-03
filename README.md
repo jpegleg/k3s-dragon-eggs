@@ -296,7 +296,7 @@ spec:
 On the wazuh/logging host (rsyslog server), ensure it is set up for a TLS syslog listener in the /etc/rsyslog.conf:
 
 ```
- make gtls driver the default
+# make gtls driver the default
 $DefaultNetstreamDriver gtls
 
 # certificate files
