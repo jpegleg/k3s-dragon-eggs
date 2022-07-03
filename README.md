@@ -71,6 +71,7 @@ anisble-playbook -u root -i hosts.ini set-bottles.yml
 anisble-playbook -u root -i hosts.ini fire-bottles.yml
 
 # Do any wazuh agent registration here before water-bottles.yml and after fire-bottles.yml.
+# I do have firewall rules that allow wazuh and syslog, so it could be done later, but makes sense here.
 anisble-playbook -u root -i hosts.ini water-bottles.yml
 
 # The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
