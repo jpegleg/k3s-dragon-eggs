@@ -43,6 +43,7 @@
     shell: systemctl stop firewalld && systemctl disable firewalld
     args:
       executable: /bin/bash
+    ignore_errors: True
 
   - name: remove firewalld
     zypper:
