@@ -44,7 +44,7 @@ metadata:
   name: default-deny
 spec:
   order: 1
-  selector: projectcalico.org/namespace != "kube-system|dragon"
+  selector: "all()"
   types:
   - Ingress
   - Egress
