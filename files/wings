@@ -1,3 +1,8 @@
-kubectl label node bottle2 node-role.kubernetes.io/worker=worker 2>/dev/null
+# This might be a good place to enforce some node labels for different hosts,
+# especially if firewall rules might involve differences between nodes in the cluster.
+# The example sets a host called "bottle2" to the role "worker".
+#kubectl label node bottle2 node-role.kubernetes.io/worker=worker 2>/dev/null
+# Then apply BGP hostendpoint autoconfiguration for calico 
 calicoctl patch kubecontrollersconfiguration default --patch='{"spec": {"controllers": {"node": {"hostEndpoint": {"autoCreate": "Enabled"}}}}}'
+# Then apply our manifest for calico global network policy, that apply across the whole cluster, including the underlying hosts.
 calicoctl apply -f /root/dragon-network.yml
