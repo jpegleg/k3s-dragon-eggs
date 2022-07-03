@@ -126,41 +126,32 @@ Instead of dropping the policy in an enterprise environment, we might have calic
 
 #### Adding a role specific rule to the global allow policy
 
-We might want to have certain types of nodes allowed to egress to specific ports:
+Keeping the global policy simple is optimal. If there is a need for large amounts of variety,
+
+An example role based "allow all" exception:
 
 ```
----
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
   name: egressor
 spec:
   selector: role == 'workstation'
-  order: 2
+  order: 0
+  types:
+  - Ingress
+  - Egress
+  ingress:
+  - action: Deny
   egress:
   - action: Allow
-    protocol: TCP
-    destination:
-      ports:
-        - 80
-        - 53
-        - 514
-        - 443
-        - 1514
-        - 1515
-  - action: Allow
-    protocol: UDP
-    destination:
-      ports: 
-        - 67
-        - 53
-        - 1515
-        - 1514
-
 
 ```
-This example allows nodes with the role "workstation" to egress to and ingress from any destination, but with those specific ports.
-Nodes with special rules should have the roles assigned prior to the policy being applied, otherwise they might need to leave and re-join.
+With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound.
+
+
+Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
+
 
 #### CICD without an image registry option
 
