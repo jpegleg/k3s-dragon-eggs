@@ -99,6 +99,8 @@ There is also currently a "bug" with tetragon where some values are populated wi
 
 See https://github.com/cilium/tetragon/issues/193 regarding more on the tetragon behavior.
 
+Despite those issues, calico and tetragon still provide great value. The removal of SNAT from calico eBPF dataplane, the global network policy options are very granular and expansive, calico can extend on to many different types of hosts and infrastructure, and the syscall tracing in tetragon are all truly great reasons to run both of them.
+
 ## Adjusting the firewall
 
 The default allows access to specific ports defined in `dragon-network.yml` from `192.168.1.0/24`.
@@ -118,6 +120,10 @@ allow-rules
 ```
 
 From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies.
+
+Instead of dropping the policy in an enterprise environment, we might have calico enterprise installed with the DNS based egress out to the internet repo, or alternatively have a local RPM repo that zypper is further configured to use.
+
+
 
 #### CICD without an image registry option
 
