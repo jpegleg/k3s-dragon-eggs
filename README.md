@@ -133,8 +133,8 @@ Have the image built, SBOM constructed, signed, tested, verified, and approved i
 tar file out to the nodes and use the ctr image import, then apply the manifests. I rather like having SSH-based CICD
 because we can put very strong controls and identity around SSH easily, where as remote registries are a bit more
 work to maintain and keep that same level of security. 
-Instead of an image registry, a collection of signed and backed up artifacts (image tarballs) can be 
-an alternative option.
+Instead of an image registry, a collection of signed and backed up artifacts (image tarballs, along with SBOMs, manifests, and ansible etc) 
+can be an alternative option.
 
 
 #### metarc aliases
