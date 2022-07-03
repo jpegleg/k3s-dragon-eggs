@@ -91,6 +91,8 @@ anisble-playbook -u root -i hosts.ini flight.yml
 
 #### calico eBPF features
 
+The calico eBPF dataplane does have a few limitations, but improves performance, removes SNAT, and gives us some interesting options.
+
 It seems that further calico features like the wireguard eBPF may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get those working in k3s successfully.
 
 There is also currently a "bug" with tetragon where some values are populated with null strings:
@@ -159,8 +161,11 @@ metadata:
 spec:
   bpfEnabled: true
   bpfDisableUnprivileged: true
-```
+  bpfKubeProxyIptablesCleanupEnabled: true
 
+  
+```
+Only use the "pfKubeProxyIptablesCleanupEnabled: true" if kubeproxy is disabled, which it is in the template here currently.
 Instead of enabling eBPF like the example above, we might disable eBPF and set netfilter chaining to either Append or Insert:
 
 ```
@@ -183,6 +188,8 @@ The calico eBPF dataplane
 
 
 Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
+
+The kubernetes API 6443 is persistently exposed by default, howver requiring authentication. 
 
 
 #### CICD without an image registry option
@@ -324,11 +331,11 @@ spec:
     source:
       nets:
         - "192.168.1.0/24"
-    destination:
       ports: 
         - 22
         - 1514
         - 1515
+        - 514
         - 30311
   - action: Allow
     protocol: ICMP
@@ -338,18 +345,19 @@ spec:
     destination:
       nets:
         - "192.168.1.0/24"
-      ports:
-        - 514
-        - 10514
-        - 1514
-        - 1515
   - action: Allow
     protocol: UDP
     destination:
+      nets:
+        - "192.168.1.0/24"
       ports: 
         - 67
-        - 1515
+        - 53
+        - 123
+        - 516
         - 1514
+        - 1515
+
 ```
 
 On the wazuh/logging host (rsyslog server), ensure it is set up for a TLS syslog listener in the /etc/rsyslog.conf:
