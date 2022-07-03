@@ -124,7 +124,43 @@ From there, we can `calicoctl delete gnp default-deny` etc, do the zypper update
 
 Instead of dropping the policy in an enterprise environment, we might have calico enterprise installed with the DNS based egress out to the internet repo, or alternatively have a local RPM repo that zypper is further configured to use.
 
+#### Adding a role specific rule to the global allow policy
 
+We might want to have certain types of nodes allowed to egress to specific ports:
+
+```
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: egressor
+spec:
+  selector: role == 'workstation'
+  order: 2
+  egress:
+  - action: Allow
+    protocol: TCP
+    destination:
+      ports:
+        - 80
+        - 53
+        - 514
+        - 443
+        - 514
+        - 1515
+  - action: Allow
+    protocol: UDP
+    destination:
+      ports: 
+        - 67
+        - 53
+        - 1515
+        - 1514
+
+
+```
+This example allows nodes with the role "workstation" to egress to and ingress from any destination, but with those specific ports.
+Nodes with special rules should have the roles assigned prior to the policy being applied, otherwise they might need to leave and re-join.
 
 #### CICD without an image registry option
 
@@ -330,4 +366,12 @@ The playbook `fire-bottles.yml` deploys the rsyslog conf and updates wazuh agent
 ```
 ansible-playbook -u root -i hosts.inventory fire-bottles.yml --tags rsyslog
 ```
+
+#### Bypassing this networking
+
+For an adversary or person to bypass the network rules, they must have access to a node as root, un-install k3s (to remove the calico node controller), then either reboot the node or unload the corret eBPF from the kernel manually. This is more challenging than disabling ufw, ipatbles, or firewall-d rules. It is roughly the same difficulty as disabling selinux rules.
+
+Unless rsyslog and wazuh agent are disabled first, then evidence of the tampering is forwarded off to the centralized server, as long as those aspects are utilized.
+
+Alternatively, if the adversary gains control of cluster admin credentials and local network access, then they could potentially modify the network rules that way. Not giving out cluster admin credentials to anything is smart. If credentials to the control plane kubernetes API need to be utilized elsewhere, such as for CICD, create a ServiceAccount that has a very limited scope that doesn't include network, probably can define explicit resources of Deployments only in many cases, perhaps Services. An adversary with a ServiceAcount can still attack and get into the cluster, but the network still traps them in some if the scope is tight. The adversary could bypass the network restrictions with tunnelling to and from a LAN network host outside of the cluster, etc.
 
