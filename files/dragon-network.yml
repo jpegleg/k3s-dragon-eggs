@@ -10,14 +10,14 @@ spec:
   - action: Allow
     protocol: TCP
     source:
-     nets:
-       - "192.168.1.0/24"
+      nets:
+        - "192.168.1.0/24"
     destination:
-     ports: 
-       - 22
-       - 1514
-       - 1515
-       - 30311
+      ports: 
+        - 22
+        - 1514
+        - 1515
+        - 30311
   - action: Allow
     protocol: ICMP
   egress:
