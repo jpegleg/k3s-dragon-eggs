@@ -151,7 +151,7 @@ Both microk8s and k3s provide easy pool growth, easy to install and uninstall, a
 
 Microk8s is easier than k3s and works in more situations.
 The downside/feature of microk8s is that it is installed via snap, which makes it easy to install on any GNU/linux distro,
-but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (uses it by default), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
+but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (microk8s calico CNI plugin by with default install currently), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
 
 K3S has a nice secrets encryption mechanism, also included in this template.
 K3S is perhaps easier to customize the API storage.
@@ -160,7 +160,7 @@ not setting a control plane IP in the auth token CA ASN1 data.
 K3S has a little more control, although still is a "supplied build" of kubernetes.
 
 There are plenty of clusters where I would do something other than microk8s or k3s, 
-however both of microk8s and k3s are very easy to use and with that, easy for 
+however both microk8s and k3s are very easy to use and with that, easy for 
 developers to reproduce configurations. Microk8s has an "EKS" configuration
 option available that mimics the AWS EKS modules, which can be useful
 for constructing individual developer test replicas when EKS is used in production.
