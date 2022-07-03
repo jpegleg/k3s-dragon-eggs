@@ -113,10 +113,11 @@ The policy blocks non-local traffic by default. With calico enterprise, DNS base
 I prefer to drop the policy when maintenance is being done. The policies are global network policies and can be removed by calicoctl (with cluster admin auth in place):
 
 ```
-bottle1:~ # calicoctl get gnp
-NAME           
-default-deny   
-allow-rules  
+bottle1:~ # calicoctl get gnp -o wide
+NAME           ORDER   SELECTOR   
+allow-rules    0       all()      
+default-deny   1       all()      
+
 ```
 
 From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies `anisble-playbook -u root -i hosts.ini flight.yml`.
