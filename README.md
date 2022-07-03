@@ -155,7 +155,7 @@ but there is some lack of control over the snap itself. Despite the "vendor mana
 K3S has a nice secrets encryption mechanism, also included in this template.
 K3S is perhaps easier to customize the API storage.
 K3S has some features that are arguably better security practices, including
-not setting a control plane IP in the auth token CA ANS1 data.
+not setting a control plane IP in the auth token CA ASN1 data.
 K3S has a little more control, although still is a still "supplied build" of kubernetes.
 
 There are plenty of clusters where I would do something other than microk8s or k3s, 
