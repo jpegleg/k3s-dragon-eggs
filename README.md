@@ -243,3 +243,91 @@ spec:
 The result of this is that "0" resolves "first" in the chain, traffic that matches those rules in our "allow-rules" global network policy resolve, then the "1" rules resolve "second" in the chain, denying everything. The result is that unless explicity defined in "0", the traffic is blocked. 
 
 Read more about calico global network policies here: https://projectcalico.docs.tigera.io/reference/resources/globalnetworkpolicy
+
+#### Adding syslog TLS
+
+The template doesn't include gnutls and syslog over TLS by default.
+If the syslog data traverses the internet or untrusted networks, then it should also have TLS applied to it.
+
+Typicall syslog over TLS will be port `10514`, add the appropriate port to the egress rule/s. Example adding it to the existing allow:
+
+```
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-rules
+spec:
+  selector: "all()"
+  order: 0
+  ingress:
+  - action: Allow
+    protocol: TCP
+    source:
+      nets:
+        - "192.168.1.0/24"
+    destination:
+      ports: 
+        - 22
+        - 1514
+        - 1515
+        - 30311
+  - action: Allow
+    protocol: ICMP
+  egress:
+  - action: Allow
+    protocol: TCP
+    destination:
+      nets:
+        - "192.168.1.0/24"
+      ports:
+        - 514
+        - 10514
+        - 1514
+        - 1515
+  - action: Allow
+    protocol: UDP
+    destination:
+      ports: 
+        - 67
+        - 1515
+        - 1514
+```
+
+On the wazuh/logging host (rsyslog server), ensure it is set up for a TLS syslog listener in the /etc/rsyslog.conf:
+
+```
+ make gtls driver the default
+$DefaultNetstreamDriver gtls
+
+# certificate files
+$DefaultNetstreamDriverCAFile /path/to/contrib/gnutls/ca.pem
+$DefaultNetstreamDriverCertFile /path/to/contrib/gnutls/cert.pem
+$DefaultNetstreamDriverKeyFile /path/to/contrib/gnutls/key.pem
+
+$ModLoad imtcp # load TCP listener
+
+$InputTCPServerStreamDriverMode 1 # run driver in TLS-only mode
+$InputTCPServerStreamDriverAuthMode anon # client is NOT authenticated
+$InputTCPServerRun 10514 # start up listener at port 10514
+```
+
+
+And then update the files/rsyslog.conf file used by the clients, removing line 41 and adding:
+
+```
+# certificate files - just CA for a client
+$DefaultNetstreamDriverCAFile /path/to/contrib/gnutls/ca.pem
+
+# set up the action
+$DefaultNetstreamDriver gtls # use gtls netstream driver
+$ActionSendStreamDriverMode 1 # require TLS for the connection
+$ActionSendStreamDriverAuthMode anon # server is NOT authenticated
+*.* @@(o)blah.blah.blah.yourlogginghost:10514 # send (all) messages
+```
+
+The playbook `fire-bottles.yml` deploys the rsyslog conf and updates wazuh agent software. To only push the rsyslog conf and restart rsyslog (without updating wazuh), use the rsyslog tag:
+
+```
+ansible-playbook -u root -i hosts.inventory fire-bottles.yml --tags rsyslog
+```
+
