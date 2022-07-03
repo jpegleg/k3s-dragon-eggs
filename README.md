@@ -192,7 +192,7 @@ The calico eBPF dataplane
 
 Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
 
-The kubernetes API 6443 is persistently exposed by default, howver requiring authentication. 
+The kubernetes API 6443 is persistently exposed by default, however requiring authentication. 
 
 
 #### CICD without an image registry option
