@@ -151,6 +151,9 @@ spec:
 ```
 With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound... except that we have a rule at the same level "0" that allows specific ports, which will then override the ingress Deny. As long as the global allow and the global deny rules are also included, they will still be in effect in the chain.
 
+
+#### Using declarative felix configuration
+
 Instead of patching in eBPF, we can use it declaratively in the network manifest like this:
 
 ```
@@ -299,10 +302,8 @@ spec:
   - action: Allow
     protocol: UDP
     destination:
-      ports: 
-        - 67
-        - 1515
-        - 1514
+      nets:
+        - "192.168.1.0/24"
 ```
 
 
@@ -331,11 +332,11 @@ spec:
     source:
       nets:
         - "192.168.1.0/24"
+    destination:
       ports: 
         - 22
         - 1514
         - 1515
-        - 514
         - 30311
   - action: Allow
     protocol: ICMP
@@ -345,18 +346,16 @@ spec:
     destination:
       nets:
         - "192.168.1.0/24"
+      ports:
+        - 514
+        - 10514
+        - 1514
+        - 1515
   - action: Allow
     protocol: UDP
     destination:
       nets:
         - "192.168.1.0/24"
-      ports: 
-        - 67
-        - 53
-        - 123
-        - 516
-        - 1514
-        - 1515
 
 ```
 
