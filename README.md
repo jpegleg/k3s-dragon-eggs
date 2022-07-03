@@ -147,7 +147,7 @@ spec:
   - action: Allow
 
 ```
-With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound.
+With the example added, nodes in the cluster tagged with the role 'workstation' by the control plane have "global" access to anything outbound but nothing inbound... except that we have a rule at the same level "0" that allows specific ports, which will then override the ingress Deny. As long as the global allow and the global deny rules are also included, they will still be in effect.
 
 
 Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
@@ -365,4 +365,6 @@ For an adversary or person to bypass the network rules, they must have access to
 Unless rsyslog and wazuh agent are disabled first, then evidence of the tampering is forwarded off to the centralized server, as long as those aspects are utilized.
 
 Alternatively, if the adversary gains control of cluster admin credentials and local network access, then they could potentially modify the network rules that way. Not giving out cluster admin credentials to anything is smart. If credentials to the control plane kubernetes API need to be utilized elsewhere, such as for CICD, create a ServiceAccount that has a very limited scope that doesn't include network, probably can define explicit resources of Deployments only in many cases, perhaps Services. An adversary with a ServiceAcount can still attack and get into the cluster, but the network still traps them in some if the scope is tight. The adversary could bypass the network restrictions with tunnelling to and from a LAN network host outside of the cluster, etc.
+
+Additionally to removing then rebooting, there is a potential for timing issues during the start sequence: we can potentially slip outbound for a short moment of time during the boot sequence. While there could be some fancy timing attacks related to this, rebooting typically isn't going to happen often enough for that to be of much use, but if such a gap is utilized it could be enough for data exfiltration etc.
 
