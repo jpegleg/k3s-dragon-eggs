@@ -134,3 +134,111 @@ because we can put very strong controls and identity around SSH easily, where as
 work to maintain and keep that same level of security. 
 Instead of an image registry, a collection of signed and backed up artifacts (image tarballs) can be 
 an alternative option.
+
+
+#### metarc aliases
+
+The calico eBPF dataplane and calicoctl are applied via files/patch-ebpf, deployed to the control plane and executed by sharpen-claws.yml.
+The sharpen-claws.yml is needed before the flight.yml can be leveraged as is, because the network policy (firewall) requires calicoctl.
+
+The aliases in https://github.com/jpegleg/metarc for calicoctl are a reference for enabling and disabling various calico eBPF patches.
+As mentioned earlier, k3s breaks with some of these patches (calico nodes and apiserver crash and various other issues), so I don't recommend changing the eBPF dataplane much for this build, unless you chose to go without it entirely. The main downsides to removing the eBPF dataplane: NAT will return and microservices won't have original client IP addresses, likely worse network performance, especially when there are several potential layers of services. 
+
+#### microk8s vs k3s
+
+Both microk8s and k3s provide easy pool growth, easy to install and uninstall, and work across many distros and situations.
+
+Microk8s is easier than k3s and works in more situations.
+The downside/feature of microk8s is that it is installed via snap, which makes it easy to install on any GNU/linux distro,
+but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (uses it by default), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
+
+K3S has a nice secrets encryption mechanism, also included in this template.
+K3S is perhaps easier to customize the API storage.
+K3S has some features that are arguably better security practices, including
+not setting a control plane IP in the auth token CA ANS1 data.
+K3S has a little more control, although still is a still "supplied build" of kubernetes.
+
+There are plenty of clusters where I would do something other than microk8s or k3s, 
+however both of microk8s and k3s are very easy to use and with that, easy for 
+developers to reproduce configurations. Microk8s has an "EKS" configuration
+option available that mimics the AWS EKS modules, which can be useful
+for constructing individual developer test replicas when EKS is used in production.
+
+Microk8s is easier to add control plane nodes to the cluster, but both microk8s and k3s are easy 
+relative to most implementations that are any good.
+
+More "demo" type impelementations like Kind and Minikube are not very good at doing real network
+things, so I avoid them in general. Microk8s and k3s can run on small systems and still do
+many great networking tasks.
+
+#### Rambling about calico
+
+Regardless of which kubernetes distribution I use, I typically use calico CNI plugin because of
+how easy it is to use and optimize: the ability to remote SNAT and preserve client IP addresses
+with a single patch while at the same time improving network performance is incredible. 
+And calico can extend on to other devices. In this template we set BGP between cluster nodes
+and have host-level network rules declared once on the control plane, applying to every labelled
+node in the cluster. 
+
+This is the second rule in the template, that denies all traffic not related to the kube-system or dragon namespaces.
+
+```
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  order: 1
+  selector: projectcalico.org/namespace != "kube-system|dragon"
+  types:
+  - Ingress
+  - Egress
+```
+
+The way the rules work is that the "order" that is lowest is resolved first. We have a "0" order rule before our deny all rule:
+
+```
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-rules
+spec:
+  selector: "all()"
+  order: 0
+  ingress:
+  - action: Allow
+    protocol: TCP
+    source:
+      nets:
+        - "192.168.1.0/24"
+    destination:
+      ports: 
+        - 22
+        - 1514
+        - 1515
+        - 30311
+  - action: Allow
+    protocol: ICMP
+  egress:
+  - action: Allow
+    protocol: TCP
+    destination:
+      nets:
+        - "192.168.1.0/24"
+      ports:
+        - 514
+        - 1514
+        - 1515
+  - action: Allow
+    protocol: UDP
+    destination:
+      ports: 
+        - 67
+        - 1515
+        - 1514
+```
+
+
+The result of this is that "0" resolves "first" in the chain, traffic that matches those rules in our "allow-rules" global network policy resolve, then the "1" rules resolve "second" in the chain, denying everything. The result is that unless explicity defined in "0", the traffic is blocked. 
+
+Read more about calico global network policies here: https://projectcalico.docs.tigera.io/reference/resources/globalnetworkpolicy
