@@ -128,7 +128,7 @@ Instead of dropping the policy in an enterprise environment, we might have calic
 
 Keeping the global policy simple is optimal. If there is a need for large amounts of variety,
 
-An example role based "allow all" exception:
+An example role based "allow all egress deny an ingress" rule:
 
 ```
 apiVersion: projectcalico.org/v3
