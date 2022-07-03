@@ -38,8 +38,8 @@
 - name: install calico via manifest
   hosts: bottle1
   tasks:
-  - name: apply calico CNI
-    shell: kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
+  - name: sleep for 15 seconds to let calico nodes come online more then apply calico CNI
+    shell: sleep 15 && kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
  
 
 ...
