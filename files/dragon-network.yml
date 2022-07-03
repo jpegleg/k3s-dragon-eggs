@@ -2,22 +2,37 @@
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
+  name: egressor
+spec:
+  selector: role == 'workstation'
+  order: 0
+  types:
+  - Ingress
+  - Egress
+  ingress:
+  - action: Deny
+  egress:
+  - action: Allow
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
   name: allow-rules
 spec:
   selector: "all()"
-  order: 0
+  order: 1
   ingress:
   - action: Allow
     protocol: TCP
     source:
-      nets:
-        - "192.168.1.0/24"
+     nets:
+       - "192.168.1.0/24"
     destination:
-      ports: 
-        - 22
-        - 1514
-        - 1515
-        - 30311
+     ports: 
+       - 22
+       - 1514
+       - 1515
+       - 30311
   - action: Allow
     protocol: ICMP
   egress:
@@ -28,22 +43,25 @@ spec:
         - "192.168.1.0/24"
       ports:
         - 514
-        - 1514
         - 1515
+        - 1514
+        - 53
   - action: Allow
     protocol: UDP
     destination:
+      nets:
+        - "192.168.1.0/24"
       ports: 
         - 67
-        - 1515
         - 1514
+        - 1515
 ---
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
 spec:
-  order: 1
+  order: 2
   selector: "all()"
   types:
   - Ingress
