@@ -2,21 +2,6 @@
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
-  name: egressor
-spec:
-  selector: role == 'workstation'
-  order: 0
-  types:
-  - Ingress
-  - Egress
-  ingress:
-  - action: Deny
-  egress:
-  - action: Allow
----
-apiVersion: projectcalico.org/v3
-kind: GlobalNetworkPolicy
-metadata:
   name: allow-rules
 spec:
   selector: "all()"
