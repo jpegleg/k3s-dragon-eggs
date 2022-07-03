@@ -18,11 +18,13 @@
     copy:
       src: files/rsyslog.conf
       dest: /etc/rsyslog.conf
+    tags: rsyslog
 
   - name: restart rsyslog
     shell: systemctl restart rsyslog
     args:
       executable: /bin/bash
+    tags: rsyslog
 
   - name: zypper refresh
     shell: zypper refresh
