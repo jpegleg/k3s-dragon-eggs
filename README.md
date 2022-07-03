@@ -77,7 +77,7 @@ anisble-playbook -u root -i hosts.ini water-bottles.yml
 # That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico-* pods are up first.
 ansible-playbook -u root -i hosts.ini sharpen-claws.yml
 
-# The hatch-eggs.yml playbook applies files/dragon-network.yml manifest to the cluster via bottle1.
+# The hatch-eggs.yml playbook applies files/dragon-manifest.yml manifest to the cluster via bottle1.
 # Ensure the manifest makes sense for your usage and that the 
 # container images are imported or otherwise available.
 anisble-playbook -u root -i hosts.ini hatch-eggs.yml
