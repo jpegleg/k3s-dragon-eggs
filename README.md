@@ -156,7 +156,7 @@ K3S has a nice secrets encryption mechanism, also included in this template.
 K3S is perhaps easier to customize the API storage.
 K3S has some features that are arguably better security practices, including
 not setting a control plane IP in the auth token CA ASN1 data.
-K3S has a little more control, although still is a still "supplied build" of kubernetes.
+K3S has a little more control, although still is a "supplied build" of kubernetes.
 
 There are plenty of clusters where I would do something other than microk8s or k3s, 
 however both of microk8s and k3s are very easy to use and with that, easy for 
