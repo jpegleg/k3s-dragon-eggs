@@ -106,7 +106,7 @@ Despite those issues, calico and tetragon still provide great value. The removal
 The default allows access to specific ports defined in `dragon-network.yml` from `192.168.1.0/24`.
 Adjust files/dragon-network.yml to include any firewall rules or adjustments needed.
 
-#### Dropping the policy for maintenance activity
+#### Removing network policies and maintenance
 
 The policy blocks non-local traffic by default. With calico enterprise, DNS based policy for the (opensuse) repos can be effectively added. Alternatively, IP addresses can be added in to the egress rules.
 
@@ -119,7 +119,7 @@ default-deny
 allow-rules  
 ```
 
-From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies.
+From there, we can `calicoctl delete gnp default-deny` etc, do the zypper updates, then reapply the policies `anisble-playbook -u root -i hosts.ini flight.yml`.
 
 Instead of dropping the policy in an enterprise environment, we might have calico enterprise installed with the DNS based egress out to the internet repo, or alternatively have a local RPM repo that zypper is further configured to use.
 
