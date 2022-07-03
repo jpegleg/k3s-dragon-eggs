@@ -168,9 +168,9 @@ for constructing individual developer test replicas when EKS is used in producti
 Microk8s is easier to add control plane nodes to the cluster, but both microk8s and k3s are easy 
 relative to most implementations that are any good.
 
-More "demo" type impelementations like Kind and Minikube are not very good at doing real network
-things, so I avoid them in general. Microk8s and k3s can run on small systems and still do
-many great networking tasks.
+More "demo" type implementations like Kind and Minikube are not very good at doing real network
+things, so I avoid them in general. Microk8s and k3s can run on small systems and still can do
+many great (accurate and flexible) networking tasks.
 
 #### Rambling about calico
 
