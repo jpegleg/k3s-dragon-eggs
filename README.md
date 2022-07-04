@@ -112,7 +112,7 @@ Adjust files/dragon-network.yml to include any firewall rules or adjustments nee
 
 The policy blocks non-local traffic by default. With calico enterprise, DNS based policy for the (opensuse) repos can be effectively added. Alternatively, IP addresses can be added in to the egress rules.
 
-I prefer to drop the policy when maintenance is being done. The policies are global network policies and can be removed by calicoctl (with cluster admin auth in place):
+I prefer to drop the policy when maintenance is being done. The policies are global network policies and can be removed by calicoctl (with cluster admin auth, or networking ServiceAccount auth, in place):
 
 ```
 bottle1:~ # calicoctl get gnp -o wide
