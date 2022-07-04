@@ -55,7 +55,7 @@ This local importing could be replaced by a remote or local registry etc.
 #### Nodes
 
 The playbooks are designed for only one control plane node set as `bottle1` in the ansible inventory (hosts.ini in the samples). 
-The `bottle2` category is the workers and we can have as many of them as we like, although it is possible that the token expires before we finish the playbook etc. Increase ansible threads or otherwise adjust for larger worker pools.
+The `bottle2` category is the workers and we can have as many of them as we like. While the default k3s tokens are long lived at the moment, it is possible that the token expires before we finish the playbook (if the token life is reduced in the bottle1 config etc). Increase ansible threads or otherwise adjust for larger worker pools. There might be a timeout applying the calico manifest after adding the workers, that typically will happen if a calico-node for one of multiple workers is slow starting up. I added a small sleep before the calico apply, feel free to adjust as needed.
 
 
 ### Example flow of playbooks
