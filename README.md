@@ -54,7 +54,7 @@ This local importing could be replaced by a remote or local registry etc.
 
 #### Nodes
 
-The playbooks are designed for only one control plane node set as `bottle1` in the ansible inventory (hosts.ini in the samples). 
+The playbooks (and in general k3s) are designed for only one control plane node set as `bottle1` in the ansible inventory (hosts.ini in the samples). 
 The `bottle2` category is the workers and we can have as many of them as we like. While the default k3s tokens are long lived at the moment, it is possible that the token expires before we finish the playbook (if the token life is reduced in the bottle1 config etc). Increase ansible threads or otherwise adjust for larger worker pools. There might be a timeout applying the calico manifest after adding the workers, that typically will happen if a calico-node for one of multiple workers is slow starting up. I added a small sleep before the calico apply, feel free to adjust as needed.
 
 
@@ -232,8 +232,10 @@ developers to reproduce configurations. Microk8s has an "EKS" configuration
 option available that mimics the AWS EKS modules, which can be useful
 for constructing individual developer test replicas when EKS is used in production.
 
-Microk8s is easier to add control plane nodes to the cluster, but both microk8s and k3s are easy 
-relative to most implementations that are any good.
+Microk8s is easier to add control plane nodes to the cluster.
+The sqlite storage in k3s limits it to a single control plane node, although it is possible to use a remote storage and link multiple k3s control plane nodes to it, that is a bit more steps to accomplish.
+Microk8s can add control plane nodes as easily as worker nodes. 
+Both microk8s and k3s are easy to add worker nodes.
 
 More "demo" type implementations like Kind and Minikube are not very good at doing real network
 things, so I avoid them in general. Microk8s and k3s can run on small systems and still can do
