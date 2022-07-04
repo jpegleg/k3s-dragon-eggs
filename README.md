@@ -128,9 +128,9 @@ Instead of dropping the policy in an enterprise environment, we might have calic
 
 #### Adding a role specific rule to the global allow policy
 
-Keeping the global policy simple is optimal. If there is a need for large amounts of variety,
+Keeping the global policy simple is optimal. If there is a need for large amounts of variety, we might do microservice specific network policy instead, keeping the global policy as short as is reasonable. With that said, there are often a few general categories of nodes that desire different rules.
 
-An example role based "allow all egress deny an ingress" rule:
+An example node role based "allow all egress deny all ingress" rule:
 
 ```
 apiVersion: projectcalico.org/v3
