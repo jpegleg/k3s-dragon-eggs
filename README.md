@@ -216,6 +216,8 @@ As mentioned earlier, k3s breaks with some of these patches (calico nodes and ap
 
 Both microk8s and k3s provide easy pool growth, easy to install and uninstall, and work across many distros and situations.
 
+See an example microk8s template in https://github.com/jpegleg/storm-reef-clusters (also includes an allow-by-default calico global network policy).
+
 Microk8s is easier than k3s and works in more situations.
 The downside/feature of microk8s is that it is installed via snap, which makes it easy to install on any GNU/linux distro,
 but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (microk8s uses the calico CNI plugin with default install currently, where as with k3s we had to take special install steps), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
