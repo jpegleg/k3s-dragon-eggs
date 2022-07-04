@@ -168,7 +168,7 @@ spec:
 
   
 ```
-Only use the "pfKubeProxyIptablesCleanupEnabled: true" if kubeproxy is disabled, which it is in the template here currently.
+Only use the "bpfKubeProxyIptablesCleanupEnabled: true" if kubeproxy is disabled, which it is in the template here currently.
 Instead of enabling eBPF like the example above, we might disable eBPF and set netfilter chaining to either Append or Insert:
 
 ```
@@ -183,14 +183,12 @@ spec:
   
 ```
 
-The `  bpfDisableUnprivileged: true` option is typically default for most linux distros, but might as well declare that we don't want that explicity here since we can.
+The `bpfDisableUnprivileged: true` option is typically default for most linux distros, but might as well declare that we don't want that explicity here since we can.
 
 See more options for Felixconfiguration here: https://projectcalico.docs.tigera.io/reference/resources/felixconfig
 
-The calico eBPF dataplane 
 
-
-Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification.
+Note: sometimes changes to rules will not immediately update a node during runtime. Reboot the node to kick on the modification. 
 
 The kubernetes API 6443 is persistently exposed by default, however requiring authentication. 
 
@@ -220,7 +218,7 @@ Both microk8s and k3s provide easy pool growth, easy to install and uninstall, a
 
 Microk8s is easier than k3s and works in more situations.
 The downside/feature of microk8s is that it is installed via snap, which makes it easy to install on any GNU/linux distro,
-but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (microk8s calico CNI plugin by with default install currently), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
+but there is some lack of control over the snap itself. Despite the "vendor managed" nature of microk8s, it handles calico better than k3s (microk8s uses the calico CNI plugin with default install currently, where as with k3s we had to take special install steps), and has many ready to use features. When I build microk8s clusters I typically enable wireguard and DSR patches (as seen in the metarc alias' `dsron` and `cwireon`) in addition to the one used here and with k3s `ebpfon`.
 
 K3S has a nice secrets encryption mechanism, also included in this template.
 K3S is perhaps easier to customize the API storage.
@@ -245,10 +243,9 @@ many great (accurate and flexible) networking tasks.
 
 Regardless of which kubernetes distribution I use, I typically use calico CNI plugin because of
 how easy it is to use and optimize: the ability to remote SNAT and preserve client IP addresses
-with a single patch while at the same time improving network performance is incredible. 
+with a single patch (or felix manifest) while at the same time improving network performance is incredible. 
 And calico can extend on to other devices. In this template we set BGP between cluster nodes
-and have host-level network rules declared once on the control plane, applying to every labelled
-node in the cluster. 
+and have host-level network rules declared once on the control plane, applying to every node in the cluster. 
 
 This is the second rule in the template denies all traffic.
 
