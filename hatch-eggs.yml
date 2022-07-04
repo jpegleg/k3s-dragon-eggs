@@ -14,7 +14,7 @@
     shell: k3s kubectl apply -f /root/dragon-manifest.yml
     args:
       executable: /bin/bash
-     tags: hatch
+    tags: hatch
 
   - name: copy out tetragon and helm script to bottle1
     copy:
