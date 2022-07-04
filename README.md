@@ -154,7 +154,7 @@ With the example added, nodes in the cluster tagged with the role 'workstation' 
 
 #### Using declarative felix configuration
 
-Instead of patching in eBPF, we can use it declaratively in the network manifest like this:
+Instead of (or in addition to) patching in the eBPF options for calico, we can use it declaratively in the network manifest like this:
 
 ```
 apiVersion: projectcalico.org/v3
