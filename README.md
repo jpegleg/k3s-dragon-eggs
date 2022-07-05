@@ -93,7 +93,7 @@ anisble-playbook -u root -i hosts.ini flight.yml
 
 The calico eBPF dataplane does have a few limitations, but improves performance, removes SNAT, and gives us some interesting options.
 
-The host-level global network policy does not work well with wireguard and/or DSR enabled eBPF dataplane. This template uses global network policy, so we don't want to use those features.
+The host-level global network policy does not work well with wireguard and/or DSR enabled eBPF dataplane. This template uses global network policy, so we won't use those features to avoid breakage. The global policy does work with just the basic eBPF dataplane enabled, so that is the configuration used here.
 
 
 #### Tetragon
