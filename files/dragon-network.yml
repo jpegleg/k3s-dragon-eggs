@@ -15,12 +15,22 @@ spec:
         - "10.0.0.0/8"
     destination:
       ports: 
+        - 179
         - 22
         - 443
         - 6443
         - 1514
         - 1515
         - 30311
+  - action: Allow
+    protocol: UDP
+    source:
+      nets:
+        - "192.168.1.0/24"
+        - "10.0.0.0/8"
+    destination:
+      ports: 
+        - 4789
   - action: Allow
     protocol: ICMP
   egress:
@@ -31,6 +41,7 @@ spec:
         - "192.168.1.0/24"
         - "10.0.0.0/8"
       ports:
+        - 179
         - 443
         - 6443
         - 514
@@ -44,6 +55,7 @@ spec:
         - "192.168.1.0/24"
         - "10.0.0.0/8"
       ports: 
+        - 4789
         - 67
         - 1514
         - 1515
