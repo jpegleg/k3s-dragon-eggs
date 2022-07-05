@@ -93,7 +93,12 @@ anisble-playbook -u root -i hosts.ini flight.yml
 
 The calico eBPF dataplane does have a few limitations, but improves performance, removes SNAT, and gives us some interesting options.
 
-It seems that further calico features like the wireguard eBPF may break k3s. As of now I'm leaving out wireguard and DSR for that reason. We'll continue trying to get those working in k3s successfully.
+The host-level global network policy does not work well with wireguard and/or DSR enabled eBPF dataplane. This template uses global network policy, so we don't want to use those features.
+
+
+#### Tetragon
+
+Tetragon is a great way to trace activity in a cluster. There is an additional tetragon binary that can be installed to parse the JSON into prettier output for console viewing.
 
 There is also currently a "bug" with tetragon where some values are populated with null strings:
 
@@ -216,7 +221,9 @@ As mentioned earlier, k3s breaks with some of these patches (calico nodes and ap
 
 Both microk8s and k3s provide easy pool growth, easy to install and uninstall, and work across many distros and situations.
 
-See an example microk8s template in https://github.com/jpegleg/storm-reef-clusters (also includes an allow-by-default calico global network policy).
+See an example microk8s template in https://github.com/jpegleg/storm-reef-clusters
+That "storm-reef-clusters" template also has the wireguard and DSR features on and the global network policy off.
+
 
 Microk8s is easier than k3s and works in more situations.
 The downside/feature of microk8s is that it is installed via snap, which makes it easy to install on any GNU/linux distro,
