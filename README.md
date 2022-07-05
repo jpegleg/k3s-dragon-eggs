@@ -276,6 +276,7 @@ spec:
 The way the rules work is that the "order" that is lowest is resolved first. We have a "0" order rule before our deny all rule:
 
 ```
+---
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
@@ -289,12 +290,25 @@ spec:
     source:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
     destination:
       ports: 
+        - 179
         - 22
+        - 443
+        - 6443
         - 1514
         - 1515
         - 30311
+  - action: Allow
+    protocol: UDP
+    source:
+      nets:
+        - "192.168.1.0/24"
+        - "10.0.0.0/8"
+    destination:
+      ports: 
+        - 4789
   - action: Allow
     protocol: ICMP
   egress:
@@ -303,15 +317,39 @@ spec:
     destination:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
       ports:
+        - 179
+        - 443
+        - 6443
         - 514
-        - 1514
         - 1515
+        - 1514
+        - 53
   - action: Allow
     protocol: UDP
     destination:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
+      ports: 
+        - 4789
+        - 67
+        - 1514
+        - 1515
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  order: 1
+  selector: "all()"
+  types:
+  - Ingress
+  - Egress
+...
+
 ```
 
 
@@ -327,6 +365,7 @@ If the syslog data traverses the internet or untrusted networks, then it should 
 Typicall syslog over TLS will be port `10514`, add the appropriate port to the egress rule/s. Example adding it to the existing allow:
 
 ```
+---
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
@@ -340,12 +379,25 @@ spec:
     source:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
     destination:
       ports: 
+        - 179
         - 22
+        - 443
+        - 6443
         - 1514
         - 1515
         - 30311
+  - action: Allow
+    protocol: UDP
+    source:
+      nets:
+        - "192.168.1.0/24"
+        - "10.0.0.0/8"
+    destination:
+      ports: 
+        - 4789
   - action: Allow
     protocol: ICMP
   egress:
@@ -354,16 +406,39 @@ spec:
     destination:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
       ports:
+        - 179
+        - 443
+        - 6443
         - 514
         - 10514
-        - 1514
         - 1515
+        - 1514
+        - 53
   - action: Allow
     protocol: UDP
     destination:
       nets:
         - "192.168.1.0/24"
+        - "10.0.0.0/8"
+      ports: 
+        - 4789
+        - 67
+        - 1514
+        - 1515
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  order: 1
+  selector: "all()"
+  types:
+  - Ingress
+  - Egress
+...
 
 ```
 
