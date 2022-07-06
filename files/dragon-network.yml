@@ -21,6 +21,7 @@ spec:
         - 6443
         - 1514
         - 1515
+        - 10250
         - 30311
   - action: Allow
     protocol: UDP
