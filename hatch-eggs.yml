@@ -10,7 +10,7 @@
       dest: /root/dragon-manifest.yml
     tags: hatch
 
-  - name: apply network manifest
+  - name: apply kubernetes manifest
     shell: k3s kubectl apply -f /root/dragon-manifest.yml
     args:
       executable: /bin/bash
