@@ -1,0 +1,12 @@
+---
+- name: uninstall k3s agent and reboot
+  hosts: bottle2
+  tasks:
+
+  - name: uninstall k3s agent and reboot
+    shell: k3s-agent-uninstall.sh && iptables -F; iptables -Z; reboot
+    args:
+      executable: /bin/bash
+    ignore_errors: True
+    tags: agent
+ ...
