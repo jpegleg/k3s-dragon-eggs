@@ -1,0 +1,14 @@
+---
+
+- name: uninstall k3s and reboot 
+  hosts: bottle1
+  tasks:
+
+  - name: uninstall k3s and reboot
+    shell: k3s-uninstall.sh && iptables -F; iptables -Z; reboot
+    args:
+      executable: /bin/bash
+    ignore_errors: True
+    tags: control
+
+...
