@@ -1,0 +1,13 @@
+---
+
+- name: import local image
+  hosts: bottle2
+  tasks:
+
+  - name: import container image locally 
+    shell: k3s ctr image import /root/pki3.tgz
+    args:
+      executable: /bin/bash
+
+
+...
