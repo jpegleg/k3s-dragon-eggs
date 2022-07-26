@@ -70,4 +70,5 @@ spec:
         resources:
           limits:
             memory: 40Mi
+            cpu: 0.5
 ...
