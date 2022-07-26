@@ -88,6 +88,30 @@ anisble-playbook -u root -i hosts.ini flight.yml
 
 ```
 
+#### Example destroy, rebuild, and test script
+
+```
+which ansible-playbook || conda deactivate && source ~/venv/bin/activate
+ansible-playbook -u root -i hosts.init kill-dragon-control.yml
+ansible-playbook -u root -i hosts.init kill-dragon-agent.yml
+sleep 60
+ansible-playbook -u root -i hosts.ini water-bottles.yml
+sleep 128
+ansible-playbook -u root -i hosts.ini sharpen-claws.yml --tags patch
+sleep 33
+ansible-playbook -u root -i hosts.ini pki.yml
+sleep 33
+ansible-playbook -u root -i hosts.ini hatch-eggs.yml 
+sleep 33
+ansible-playbook -u root -i hosts.ini flight.yml
+echo
+echo
+echo "The dragon eggs have hatched! PKI3 service regression test starting..."
+cd ..
+bash tests-dragon.sh
+echo
+```
+
 
 #### calico eBPF features
 
