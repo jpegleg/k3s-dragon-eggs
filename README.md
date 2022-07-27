@@ -74,6 +74,10 @@ anisble-playbook -u root -i hosts.ini fire-bottles.yml
 # I do have firewall rules that allow wazuh and syslog, so it could be done later, but makes sense here.
 anisble-playbook -u root -i hosts.ini water-bottles.yml
 
+## iIport a local container image, in our example one called localhost/pki3 (see https://github.com/jpegleg/three_pki for that template).
+# The idea is that this k3s cluster is running a single or small set of pki related services.
+ansible-playbook -u root -i hosts.ini local_import.yml
+
 # The sharpen-claws.yml needs to be applied after the calico pods are all up and ready to go.
 # That might take a little while. Go visit the bottle1 and k3s kubectl get pods -A and make sure the calico-* pods are up first.
 ansible-playbook -u root -i hosts.ini sharpen-claws.yml
@@ -98,7 +102,7 @@ ansible-playbook -u root -i hosts.ini water-bottles.yml
 sleep 128
 ansible-playbook -u root -i hosts.ini sharpen-claws.yml --tags patch # patch tag skips downloading calicoctl again
 sleep 33
-ansible-playbook -u root -i hosts.ini pki.yml
+ansible-playbook -u root -i hosts.ini local_import.yml
 sleep 33
 ansible-playbook -u root -i hosts.ini hatch-eggs.yml 
 sleep 33
