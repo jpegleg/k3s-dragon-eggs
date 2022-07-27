@@ -91,13 +91,12 @@ anisble-playbook -u root -i hosts.ini flight.yml
 #### Example destroy, rebuild, and test script
 
 ```
-which ansible-playbook || conda deactivate && source ~/venv/bin/activate
 ansible-playbook -u root -i hosts.init kill-dragon-control.yml
 ansible-playbook -u root -i hosts.init kill-dragon-agent.yml
-sleep 60
+sleep 50
 ansible-playbook -u root -i hosts.ini water-bottles.yml
 sleep 128
-ansible-playbook -u root -i hosts.ini sharpen-claws.yml --tags patch
+ansible-playbook -u root -i hosts.ini sharpen-claws.yml --tags patch # patch tag skips downloading calicoctl again
 sleep 33
 ansible-playbook -u root -i hosts.ini pki.yml
 sleep 33
