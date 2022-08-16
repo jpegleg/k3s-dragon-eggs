@@ -64,17 +64,17 @@ The `bottle2` category is the workers and we can have as many of them as we like
 # The set-bottles.yml playbook installs some packages and sets the message-of-the-day file /etc/motd.
 # This playbook also removes firewalld! The networking and firewalling is to be done with Calico, see dragon-network.yml
 # as applied via flight.yml ansible playbook.
-anisble-playbook -u root -i hosts.ini set-bottles.yml
+ansible-playbook -u root -i hosts.ini set-bottles.yml
 
 # The fire-bottles.yml playbook adds the wazuh 4 repository to bottle1 and bottle2, 
 # as well as the gpg signing key, sets an rsyslog.conf, and refreshes zypper.
-anisble-playbook -u root -i hosts.ini fire-bottles.yml
+ansible-playbook -u root -i hosts.ini fire-bottles.yml
 
 # Do any wazuh agent registration here before water-bottles.yml and after fire-bottles.yml.
 # I do have firewall rules that allow wazuh and syslog, so it could be done later, but makes sense here.
-anisble-playbook -u root -i hosts.ini water-bottles.yml
+ansible-playbook -u root -i hosts.ini water-bottles.yml
 
-## iIport a local container image, in our example one called localhost/pki3 (see https://github.com/jpegleg/three_pki for that template).
+## import a local container image, in our example one called localhost/pki3 (see https://github.com/jpegleg/three_pki for that template).
 # The idea is that this k3s cluster is running a single or small set of pki related services.
 ansible-playbook -u root -i hosts.ini local_import.yml
 
