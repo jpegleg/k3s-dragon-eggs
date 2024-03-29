@@ -14,23 +14,6 @@ spec:
         - "192.168.1.0/24"
         - "10.0.0.0/8"
         - "172.16.0.0/12"
-    destination:
-      ports: 
-        - 179
-        - 22
-        - 443
-        - 2379
-        - 2380
-        - 6443
-        - 1514
-        - 1515
-        - 10250
-        - 10257
-        - 10259
-        - 1053
-        - 4242
-        - 8484
-        - 30311
   - action: Allow
     protocol: UDP
     source:
@@ -38,55 +21,12 @@ spec:
         - "192.168.1.0/24"
         - "10.0.0.0/8"
         - "172.16.0.0/12"
-    destination:
-      ports: 
-        - 4789
   - action: Allow
     protocol: ICMP
   egress:
   - action: Allow
     protocol: TCP
-    destination:
-      nets:
-        - "192.168.1.0/24"
-        - "10.0.0.0/8"
-        - "172.16.0.0/12"
-      ports:
-        - 179
-        - 443
-        - 2379
-        - 2380
-        - 10257
-        - 10259
-        - 6443
-        - 514
-        - 1515
-        - 1514
-        - 1053
-        - 8484
-        - 4242
-        - 53
   - action: Allow
     protocol: UDP
-    destination:
-      nets:
-        - "192.168.1.0/24"
-        - "10.0.0.0/8"
-        - "172.16.0.0/12"
-      ports: 
-        - 4789
-        - 67
-        - 1514
-        - 1515
+
 ---
-apiVersion: projectcalico.org/v3
-kind: GlobalNetworkPolicy
-metadata:
-  name: default-deny
-spec:
-  order: 1
-  selector: "all()"
-  types:
-  - Ingress
-  - Egress
-...
